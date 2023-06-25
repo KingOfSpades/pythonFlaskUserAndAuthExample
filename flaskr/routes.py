@@ -81,8 +81,20 @@ def rsvp(username):
       flash("Please enter a valid Party ID to RSVP!")
   return render_template('rsvp.html', user=user, dinner_parties=dinner_parties, form=form)
 
+@login_manager.unauthorized_handler
+def unauthorized():
+  # do stuff
+  return "Sorry you must be logged in to view this page <a href=/login>Login here</a>"
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 # landing page route
 @app.route('/')
+@login_required
 def index():
   current_users = User.query.all()
   return render_template('landing_page.html', current_users = current_users)

@@ -1,9 +1,9 @@
+{% extends "base.html"  %}
+{% block content %}
+
 <head>
   <h1>Dinner Party Guests</h1>
 </head>
-    {% if current_user.is_authenticated %}
-      Hi {{ current_user.username }}!
-    {% endif %}
     {% if current_users|length == 0 %}
     <p style="color:blue;"> Ooops. There are no users currently in your database. Make sure to add them first. </p>
     <p>You can register as a new user here: <a href="{{ url_for('register')}}">Register</a> </p>
@@ -13,3 +13,5 @@
       <li>{{ user.email }}</li>
     </ul>
     {% endfor %}
+
+{% endblock %}
