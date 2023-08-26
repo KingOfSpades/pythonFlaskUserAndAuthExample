@@ -2,8 +2,14 @@
 {% block content %}
 
 <head>
-  <h1>Dinner Party Guests</h1>
+  <h1>The secret page</h1>
 </head>
+
+<p>
+  Hey {{ current_users.username }}! If you are here that means you are logged in! Here are 
+  all users that can login.
+</p>
+
     {% if current_users|length == 0 %}
     <p style="color:blue;"> Ooops. There are no users currently in your database. Make sure to add them first. </p>
     <p>You can register as a new user here: <a href="{{ url_for('register')}}">Register</a> </p>
@@ -11,7 +17,11 @@
     <ul>
     {% for user in current_users %}
       <li>{{ user.email }}</li>
+      <li>{{ user.username}}</li>
+      <li>{{ user.joined_at}}</li>
     </ul>
     {% endfor %}
+
+
 
 {% endblock %}
