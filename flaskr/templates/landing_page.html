@@ -6,7 +6,7 @@
 </head>
 
 <p>
-  Hey {{ current_users.username }}! If you are here that means you are logged in! Here are 
+  Hey {{current_user.username}}! If you are here that means you are logged in! Here are 
   all users that can login.
 </p>
 
@@ -14,14 +14,24 @@
     <p style="color:blue;"> Ooops. There are no users currently in your database. Make sure to add them first. </p>
     <p>You can register as a new user here: <a href="{{ url_for('register')}}">Register</a> </p>
     {% endif %}
-    <ul>
-    {% for user in current_users %}
-      <li>{{ user.email }}</li>
-      <li>{{ user.username}}</li>
-      <li>{{ user.joined_at}}</li>
-    </ul>
-    {% endfor %}
 
-
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Joined at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in current_users %}
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.joined_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
 {% endblock %}
