@@ -9,18 +9,42 @@
 </head>
 <body>
 
-<menu>
-  <p class="">Hey {{ current_user.username }}</p>
-  <a class="btn btn-link" href="{{ url_for('index')}}" role="button">Home</a>
-  <a class="btn btn-link" href="{{ url_for('user', username=current_user.username)}}" role="button">User</a>
-  <a class="btn btn-link" href="{{ url_for('rsvp', username=current_user.username)}}" role="button">RSVP</a>
-  <a class="btn btn-link" href="{{ url_for('login')}}" role="button">Login</a>
-  <a class="btn btn-link" href="{{ url_for('logout')}}" role="button">Logout</a>
-</menu>
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Python Login App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('index')}}">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('user', username=current_user.username)}}">User</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('rsvp', username=current_user.username)}}">RSVP</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+            </li>
+        </div>
+      </nav>
+    </header>
 
-  {% block content %}
-  {% endblock %}
+    
+    </menu>
 
+    <!-- Begin page content -->
+    <main role="main" class="container" style="padding-top: 60px">
+    <menu>
+
+      {% block content %}
+      {% endblock %}
+
+    </main>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
