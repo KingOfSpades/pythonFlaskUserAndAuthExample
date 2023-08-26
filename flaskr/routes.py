@@ -35,51 +35,6 @@ def login():
       return redirect(url_for('login', _external=True, _scheme='https'))
   return render_template('login.html', form=form)
 
-# user route
-@app.route('/user/<username>', methods=['GET', 'POST'])
-@login_required
-def user(username):
-  user = User.query.filter_by(username=username).first_or_404()
-  dinner_parties = DinnerParty.query.filter_by(party_host_id=user.id)
-  if dinner_parties is None:
-    dinner_parties = []
-  form = DinnerPartyForm(csrf_enabled=False)
-  if form.validate_on_submit():
-    new_dinner_party = DinnerParty(
-      date = form.date.data,
-      venue = form.venue.data,
-      main_dish = form.main_dish.data,
-      number_seats = int(form.number_seats.data), 
-      party_host_id = user.id,
-      attendees = username)
-    db.session.add(new_dinner_party)
-    db.session.commit()
-  return render_template('user.html', user=user, dinner_parties=dinner_parties, form=form)
-
-# rsvp route
-@app.route('/user/<username>/rsvp/', methods=['GET', 'POST'])
-@login_required
-def rsvp(username):
-  user = User.query.filter_by(username=username).first_or_404()
-  dinner_parties = DinnerParty.query.all()
-  if dinner_parties is None:
-    dinner_parties = []
-  form = RsvpForm(csrf_enabled=False)
-  if form.validate_on_submit():
-    dinner_party = DinnerParty.query.filter_by(id=int(form.party_id.data)).first()
-    # try block
-    try:
-      dinner_party.attendees += f", {username}"
-      db.session.commit()
-      # query to find the host of dinner_party
-      host = User.query.filter_by(id=int(dinner_party.party_host_id)).first()
-      # add RSVP success message here:
-      flash(f"You successfully RSVP'd to {host.username}'s dinner party on {dinner_party.date}!")
-    # except block
-    except:
-      # add the RSVP failure message here
-      flash("Please enter a valid Party ID to RSVP!")
-  return render_template('rsvp.html', user=user, dinner_parties=dinner_parties, form=form)
 
 @login_manager.unauthorized_handler
 def unauthorized():
