@@ -26,32 +26,63 @@ Now start the app with `make` or run it manually:
 $ make run
 ```
 
-This will start the app on: http://127.0.0.1:5000. You should now see this 
-beautifull todo app:
+This will start the app on: https://127.0.0.1:5000. You will get an https error
+because we are using a custom certificate. After accepting this you should see
+a message that you should login. Follow the instuctions and crate an account. You
+can now login to the application.
 
 
 # Explaining the app
 
-This is easy app tha relies on one (1) database model, a FlaskForm and four (4)
-routes to handle requests:
+This is easy app tha relies on one (1) database model, a FlaskForm and a couple 
+of routes.
+
+The most important thing is that you need to be logged in to view the "backend".
+This is handeld by `LoginManager`. Users are stored in the DB with a hashed
+password using the `generate_password_hash()` method (see `models.py`).
 
 
-## Diagram overview
+# Forms
 
-```mermaid
-flowchart LR
-    browser --> / --> |return| render(index)
-    browser --> /add --> add --> |redirect| /
-    browser --> /update/int:id --> update --> |redirect| /
-    browser --> /delete/int:id --> delete --> |redirect| /
-    render ---> |shows application| browser
-    db --> |provides data| render
+We use two (2) simpel forms:
 
-    
-   add -.-> |add| db[(Database)]
-   update -.-> |update| db[(Database)]
-   delete -.-> |delete| db[(Database)]
+- A registration form (for creating new users)
+- A login form (for login in to the app)
+
+# Neat things
+
+A few nice things:
+
+## Clean app.py
+
+The `app.py` is verry _clean_ because we use the import method:
+
+```python
+# app.py
+...
+import routes, models
+...
 ```
 
-## Forms
+## Using SSL
 
+This is enabled in `app.py`:
+
+```python
+# app.py
+# This will create an ad hoc cert
+if __name__ == "__main__":
+  app.run(ssl_context='adhoc')
+```
+
+You can also choose to create a custom certificate and parse that to the app. See
+https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
+
+You can re-direct traffic to HTTPS in routes using:
+
+```python
+# routes.py
+...
+return redirect(next_page) if next_page else redirect(url_for('index', _external=True, _scheme='https'))
+...
+```
